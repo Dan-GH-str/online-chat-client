@@ -215,6 +215,12 @@
     .btn {
         font-size: 1rem;
     }
+
+    @media (max-height: 620px) {
+        .input_group {
+            margin-bottom: 1.5rem;
+        }
+    }
 }
 
 @media (max-width: 768px) {
@@ -269,5 +275,33 @@
     .drop_5 {
         height: 50px;
         width: 50px;
+    }
+}
+
+@media (max-height: 760px) {
+    .form {
+        padding: 2rem 1.8rem;
+    }
+
+    .input_group {
+        padding: .8rem;
+    }
+}
+
+@media (max-height: 670px) {
+    .container {
+        height: 52%;
+    }
+
+    .form {
+        padding: 1.8rem 1.8rem;
+    }
+
+    .input_group {
+        padding: .7rem;
+    }
+
+    .btn {
+        padding: .8rem;
     }
 }
