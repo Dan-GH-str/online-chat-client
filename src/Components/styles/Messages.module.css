@@ -1,0 +1,95 @@
+.messages {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    color: #fff;
+}
+
+/* Стили для скролла в чате */
+.messages::-webkit-scrollbar {
+    width: 9px;               
+}
+
+.messages::-webkit-scrollbar-track  {
+    background-color: rgb(22, 22, 22);              
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+    border-radius: 100px;
+}
+
+.message {
+    width: 100%;
+    min-height: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.message.me {
+    align-items: flex-end;
+}
+
+.userName {
+    color: #d4d4d4;
+    font-size: 18px;
+    padding-left: .8rem;
+    padding-right: .8rem;
+    padding-bottom: .5rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.text {
+    max-width: 95%;
+    width: max-content;
+    font-size: 20px;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.user .text {
+    background: #514c4c;
+}
+
+.me .text{
+    background: #0d49d7;
+}
+
+/* Стили для адаптивности */
+@media (max-width: 768px) {
+    .userName {
+        font-size: 16px;
+    }
+
+    .text {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .messages {
+        padding-top: 0.2rem;
+    }
+
+    .message {
+        padding: .5rem 1rem;
+    }
+
+    .userName {
+        font-size: 15px;
+    }
+
+    .text {
+        font-size: 16px;
+    }
+
+    .messages::-webkit-scrollbar {
+        width: 5px;               
+    }
+}
