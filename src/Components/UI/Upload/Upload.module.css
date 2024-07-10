@@ -1,0 +1,33 @@
+.inputFiles {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.inputFiles__field {
+    display: none;
+}
+
+.inputFiles__icon {
+    width: 100%;
+    height: 100%;
+    color: #b9b9b9;
+}
+
+.inputFiles__icon:hover {
+    color: #FFF;
+}
+
+@media (max-width: 768px) {
+    .inputFiles {
+        width: 33px;
+        height: 33px;
+    }
+}
+
+@media (max-width: 480px) {
+    .inputFiles {
+        width: 30px;
+        height: 30px;
+    }
+}

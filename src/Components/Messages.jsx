@@ -1,21 +1,14 @@
 import { forwardRef } from "react"
 import cl from "./styles/Messages.module.css"
+import Message from "./Message"
 
-const Messages = forwardRef( function Messages({ messages, name}, ref) {
+const Messages = forwardRef(function Messages({ messages, name }, ref) {
+    
+    console.log("MESSAGES ", messages);
+    
     return (
         <div className={cl.messages} ref={ref}>
-            {messages.map(({user, text}, i) => {
-                const itsMe = user.name.trim().toLowerCase() === name.trim().toLowerCase()
-                const className = itsMe ? cl.me : cl.user
-
-                return (
-                    <div key={i} className={`${cl.message} ${className}`}>
-                        <span className={cl.userName}>{user.name}</span>
-
-                        <div className={cl.text}>{text}</div>
-                    </div>
-                )
-            })}
+            {messages.map((data, i) => <Message data={data} name={name} key={data.id}/>)}
         </div>
     )
 })

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import cl from "./Main.module.css"
 import { Link } from "react-router-dom"
-import CloseButton from "../../Components/UI/CloseButton"
+import MainPageCloseButton from "../../Components/UI/MainPageCloseButton/MainPageCloseButton.jsx"
 
 const FIELDS = {
     USERNAME: "username",
@@ -42,7 +42,7 @@ const Main = () => {
                             onChange={handleChange}  
                             required  
                         />
-                        <CloseButton clearInput={setValues} state={values} name={USERNAME}/>
+                        <MainPageCloseButton clearInput={setValues} state={values} name={USERNAME}/>
                     </div>
 
                     <div className={cl.input_group}>
@@ -57,7 +57,7 @@ const Main = () => {
                             onChange={handleChange}  
                             required  
                         />
-                        <CloseButton clearInput={setValues} state={values} name={ROOM}/>
+                        <MainPageCloseButton clearInput={setValues} state={values} name={ROOM}/>
                     </div>
                     <Link 
                         onClick={validateForm} 

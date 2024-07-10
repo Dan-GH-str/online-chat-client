@@ -1,0 +1,36 @@
+.attached-files-area {
+    height: 100%;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    background-color: #333;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.attached-files-area__container {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.attached-files-area__container::-webkit-scrollbar{
+    width: 3px;
+}
+
+.attached-files-area__container::-webkit-scrollbar-thumb {
+    background-color: #535353;
+    border-radius: 25px;
+}
+
+.attached-files-area__container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+@media (max-width: 1550px) {
+    .attached-files-area {
+        padding: 1rem 1.2rem;
+    }
+}

@@ -1,0 +1,9 @@
+@mixin flexible-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin montserrat($weight) {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: $weight;
+}

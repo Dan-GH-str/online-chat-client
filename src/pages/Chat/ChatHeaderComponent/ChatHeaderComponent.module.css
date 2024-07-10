@@ -1,0 +1,84 @@
+/* Стили для header */
+.header {
+    width: 100%;
+    height: 8%;
+    background-color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Poiret One', arial;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.title, .users {
+    color: #fff;
+    padding: 0 2rem;
+    font-size: 21px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.left {
+    height: 70%;
+    background: rgb(253, 73, 73);
+    border-radius: 12px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 12px;
+    border: none;
+}
+
+.left:hover {
+    background: rgb(226, 65, 65);
+}
+
+.left:active {
+    background: rgb(203, 65, 65);
+}
+
+/* Стили для адаптивности */
+@media (max-width: 768px) {
+    .title, .users {
+        font-size: 19px;
+    }
+
+    .left {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .title, .users {
+        font-size: 17px;
+    }
+
+    .left {
+        padding: 7px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 16px;
+        box-sizing: border-box;
+        width: 33%;
+        padding: 0 1rem;
+    }
+
+    .users {
+        font-size: 14px;
+        width: 75%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .left {
+        font-size: 13px;
+        margin-right: 0.5rem;
+    }
+}   

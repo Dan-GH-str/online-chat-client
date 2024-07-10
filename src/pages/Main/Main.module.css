@@ -70,6 +70,10 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.input::placeholder {
+    color: #555555;
+}
+
 .btn {
     background: transparent;
     padding: 1rem;

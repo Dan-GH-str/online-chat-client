@@ -1,23 +1,29 @@
 import io from "socket.io-client"
 import { useEffect, useState, useRef } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import EmojiPicker from "emoji-picker-react";
 import cl from "./Chat.module.css"
-import icon from "../../images/icon.svg"
 import Messages from "../../Components/Messages";
+import Upload from "../../Components/UI/Upload/Upload.jsx";
+import ModalImageViewer from "../../Components/ModalImageViewer.jsx";
+import ChatHeaderComponent from "./ChatHeaderComponent/ChatHeaderComponent.jsx";
+import ChatAttachedFiles from "./ChatAttachedFiles/ChatAttachedFiles.jsx";
+import { BiSolidSend } from "react-icons/bi";
+import { RiEmojiStickerFill } from "react-icons/ri";
 
-const URL = process.env.REACT_APP_SERVER_URL || 5000
+const URL = process.env.REACT_APP_SERVER_URL
 const socket = io.connect(URL)
 
 const Chat = () => {
-    const navigate = useNavigate()
     const { search } = useLocation()    // Получение параметров из запроса в виде строки
     const [params, setParams] = useState({name: '', room: ''})
     const [messages, setMessages] = useState([])    // Массив всех сообщений в комнате
-    const [usersCount, setUsersCount] = useState(0)
     const [message, setMessage] = useState('')      // Текст сообщения в инпуте
     const [emojiIsOpen, setEmojiIsOpen] = useState(false)
+    const [files, setFiles] = useState([])  // Массив файлов, прикрепленных к новому сообщению
+    const [modalImageViewerData, setModalImageViewerData] = useState({slideIndex: 0, sources: []}) // состояние хранит массив url-путей картинок, которые нужно открыть в модальном окне, а также индекс картинки, которая будет показываться по умолчанию, т. е. картинка, на которую нажал пользователь
     const nodeMessages = useRef()
+    // 
 
     useEffect(()=> {
         // объект типа URLSearchParams является перебираемым, аналогично Map => можно получить объект с ключами(в данном случае названия параметров запроса) и их значениями(значения параметров запроса)
@@ -28,13 +34,33 @@ const Chat = () => {
         socket.emit('join', searchParams)
     }, [search])
 
+    // Автоматический скролл до последнего сообщения
     useEffect(() => {
-        // Автоматический скролл до последнего сообщения
         let lastMessage = nodeMessages.current.lastElementChild
-
+        
         if (lastMessage !== null)
             lastMessage.scrollIntoView()
     }, [messages])
+
+    // Изменения соотношения основной части чата и его нижней части при прикреплении файлов для большей удобности
+    useEffect(() => {
+        const $chatMain = nodeMessages.current.parentNode
+        const $chatInput = nodeMessages.current.parentNode.nextElementSibling
+
+        if (files.length === 1) {
+            $chatMain.style.height = "62%"
+            $chatInput.style.height = "30%"
+        }
+        else if (files.length > 1) {
+            $chatMain.style.height = "47%"
+            $chatInput.style.height = "45%"
+        }
+        else {
+            $chatMain.style.removeProperty("height")
+            $chatInput.style.removeProperty("height")
+        }
+
+    }, [files])
 
     useEffect(() => {
         // Отправление сообщения от кого-либо из пользователей:
@@ -42,31 +68,11 @@ const Chat = () => {
             setMessages((_state) => [..._state, data])
         })
 
-        socket.on('loadMessagesHistory', (messages) => {
-            setMessages([...messages])
-        })
-
-        // Присоединение кого-либо из пользователей к комнате
-        socket.on('joinRoom', ({ data }) => {
-            setUsersCount(data.users.length)
-        })
-
-        // кто-либо из пользователей покинул комнату
-        socket.on('leftRoom', ({ data }) => {
-            setUsersCount(data.users.length)
+        socket.on('loadMessagesHistory', ({ data }) => {
+            console.log(data);
+            setMessages([...data])
         })
     }, [])
-
-    const leftRoom = () => {
-        socket.emit('leftRoom', params)
-        navigate('/')
-    }
-
-    const insertEnding = (count) => {
-        if (count % 10 === 1) return 'ь'
-        else if ([2, 3, 4].includes(count % 10)) return 'я'
-        else return 'ей'  
-    }
 
     const handleChange = (e) => setMessage(e.target.value)
 
@@ -77,51 +83,81 @@ const Chat = () => {
     const sendMessage = (e) => {
         e.preventDefault()
 
-        if (!message.trim()) return
-
-        socket.emit('sendMessage', {message, params})
+        if (!message.trim() && !files.length) return
+        console.log(files);
+        socket.emit('sendMessage', {message, params, files})
         
+        setFiles([])
         setMessage('')
     }
 
+    // Обработчик отслеживает клики на картинки и документы в чате. При клики на картинке открывается модальное окно, при клике на файлы происходит их скачивание
+    const chatHandleListener = (e) => {
+        if (e.target.nodeName === "IMG") {
+            const sources = []  // Массив url-путей до картинок, которые будут отрисовываться при открытии модального окна с картинками
 
+            e.target.parentNode.parentNode.childNodes.forEach(el => sources.push(el.childNodes[0].currentSrc))
+
+            console.log("INDEEEEEEEEEX", e.target.dataset.index);
+
+            setModalImageViewerData({ slideIndex: parseInt(e.target.dataset.index), sources })
+        }
+
+        // Получение URL файла, если нажатие было на файл
+        else if (e.target.dataset.docurl || e.target.parentNode.dataset.docurl) {
+            const url = `${e.target.dataset.docurl || e.target.parentNode.dataset.docurl}`
+            window.location.href = url
+        }
+    }
+
+console.log("FILES", files);
     return (
         <div className={cl.wrap}>
             <div className={cl.container}>
-                <div className={cl.header}>
-                    <div className={cl.title}>{params.room}</div>
-                    <div className={cl.users}>{usersCount} пользовател{insertEnding(usersCount)} в комнате</div>
-                    <button className={cl.left} onClick={leftRoom}>Покинуть комнату</button>
-                </div>
+                
+                <ChatHeaderComponent params={params} socket={socket} />
 
-                <div className={cl.main}>
+                <div className={cl.main} onClick={chatHandleListener}>
                     <Messages messages={messages} name={params.name} ref={nodeMessages}/>
                 </div>
 
-                <form className={cl.form} onSubmit={sendMessage}>
-                    <input 
-                        type="text" 
-                        placeholder="Ваше сообщение..." 
-                        name="message"
-                        className={cl.input}
-                        value={message}
-                        onChange={handleChange}
-                        autoComplete="off"  
-                        required  
-                    />
-                    <div className={cl.emoji}>
-                        <img src={icon} alt="" onClick={() => setEmojiIsOpen(!emojiIsOpen)}/>
+                <div className={cl.input}>
 
-                        {emojiIsOpen && (
-                            <div className={cl.emojies}>
-                                <EmojiPicker onEmojiClick={onEmojiClick} />
-                            </div>
-                        )}
-                    </div>
-                    <button type="submit" onSubmit={sendMessage} className={cl.btn}>Отправить</button>
-                </form>
+                    <form className={cl.form} onSubmit={sendMessage}>
+                        <input 
+                            type="text" 
+                            placeholder="Ваше сообщение..." 
+                            name="message"
+                            className={cl["form-input"]}
+                            value={message}
+                            onChange={handleChange}
+                            autoComplete="off"  
+                            required  
+                        />
+                        <Upload setFiles={setFiles}/>
+                        <div className={cl.emoji}>
+                            <RiEmojiStickerFill className={cl["emoji-icon"]} onClick={() => setEmojiIsOpen(!emojiIsOpen)} title="Выбрать смайлики"/>
+
+                            {emojiIsOpen && (
+                                <div className={cl.emojies}>
+                                    <EmojiPicker onEmojiClick={onEmojiClick} />
+                                </div>
+                            )}
+                        </div>
+                        <BiSolidSend onClick={sendMessage} className={cl.btn} title="Отправить"/>
+                    </form>
+
+                    {!!files.length && 
+                        <ChatAttachedFiles files={files} setFiles={setFiles}/>
+                    }
+
+                </div>
+
+                
 
             </div>
+
+            <ModalImageViewer modalImageViewerData={modalImageViewerData} setModalImageViewerData={setModalImageViewerData} />
         </div>
     )
 }

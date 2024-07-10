@@ -1,0 +1,178 @@
+@import "../../../styles/abstracts/mixins";
+
+.horizontal-slider {
+    width: 100vw;
+    height: 100vh;
+    @include flexible-column ();
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    &__info {
+        width: 100%;
+        height: 85%;
+        display: flex;
+        transition: transform .8s ease-in-out;
+    }
+
+    &__info-item {
+        min-width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__info-image {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    &__pagination {
+        height: 15%;
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        z-index: 1;
+        transition: right 1s ease-in-out;
+
+        &-image {
+            height: 100%;
+            width: 100%;
+            background-position: center;
+            object-fit: cover;
+        }
+    }
+
+    &__slide-index {
+        height: 60%;
+        width: 6%;
+        margin: 0 2rem;
+        background-color: black;
+        transition: all 1s ease-in-out;
+        cursor: pointer;
+    }
+
+    &__slide-index_active {
+        width: 12%;
+    }
+
+    &__button {
+        height: 70px;
+        width: 70px;
+        color: white;
+        position: absolute;
+        border-radius: 50%;
+        border: none;
+        background-color: rgba(0, 0, 0, 0);
+        cursor: pointer;
+    }
+
+    &__button:hover {
+        background-color: rgba(0, 0, 0, 0.144);
+    }
+
+    &__button:active {
+        background-color: rgba(0, 0, 0, 0.188);
+    }
+
+    &__close {
+        left: 94%;
+    }
+
+    &__angle-right {
+        top: 50%;
+        left: 94%;
+    }
+
+    &__angle-left {
+        top: 50%;
+        right: 94%;
+    }
+
+    @media (max-width: 1550px) {
+        &__info-image {
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        &__slide-index {
+            margin: 0 1.1rem;
+        }
+    }
+
+    @media (max-width: 1280px) {
+        &__angle-right {
+            left: 93%;
+        }
+
+        &__angle-left {
+            right: 93%
+        }
+    }
+
+    @media (max-width: 1024px) {
+        &__slide-index {
+            height: 50%;
+        }
+
+        &__close {
+            left: 93%;
+        }
+
+        &__angle-right {
+            left: 91%
+        }
+
+        &__angle-left {
+            right: 91%;
+        }
+    }
+
+    @media (max-width: 900px) {
+        &__close {
+            left: 91%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        &__slide-index {
+            margin: 0 0.5rem;
+        }
+
+        &__close {
+            font-size: 0.8rem;
+            height: 50px;
+            width: 50px;
+            left: 88%;
+            top: 1%
+        }
+
+        &__angle-right {
+            left: 88%
+        }
+
+        &__angle-left {
+            right: 88%;
+        }
+
+        &__angle-right, &__angle-left {
+            height: 55px;
+            width: 55px;
+        }
+    }
+
+    @media (max-width: 480px) { 
+        &__pagination {
+            width: 150%;
+            justify-content: start;
+            position: relative;
+            right: -64%;
+        }
+
+        &__close {
+            left: 85%;
+        }
+    }
+}
