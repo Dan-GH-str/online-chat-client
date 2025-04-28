@@ -16,7 +16,7 @@ const Upload = ({ setFiles }) => {
         let id = 0;
     
         // Считывание прикрепленных файлов
-        console.log(selectedFiles);
+        console.log("SELECTED FILES", selectedFiles);
         selectedFilesKeys.forEach(async (key, i) => {
             let reader = new FileReader()
 

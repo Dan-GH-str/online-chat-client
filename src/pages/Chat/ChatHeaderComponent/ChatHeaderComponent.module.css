@@ -7,16 +7,28 @@
     justify-content: space-between;
     align-items: center;
     font-family: 'Poiret One', arial;
+    padding: 0 2rem;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
+.title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .title, .users {
     color: #fff;
-    padding: 0 2rem;
+    padding: 0 0rem;
     font-size: 21px;
     display: flex;
     text-align: center;
+    align-items: center;
+}
+
+.options {
+    display: flex;
     align-items: center;
 }
 
@@ -41,6 +53,12 @@
 }
 
 /* Стили для адаптивности */
+@media (max-width: 1366px) {
+    .header {
+        padding: 0 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .title, .users {
         font-size: 19px;
@@ -63,6 +81,10 @@
 }
 
 @media (max-width: 480px) {
+    .header {
+        padding: 0 0.5rem;
+    }
+
     .title {
         font-size: 16px;
         box-sizing: border-box;

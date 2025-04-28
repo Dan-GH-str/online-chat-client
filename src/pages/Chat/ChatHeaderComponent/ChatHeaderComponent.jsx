@@ -1,14 +1,34 @@
 import { useNavigate } from "react-router-dom"
+import VerticalDotsDropdown from "../../../Components/UI/VerticalDotsDropdown/VerticalDotsDropdown"
 import cl from "./ChatHeaderComponent.module.css"
 import { useState, useEffect } from "react"
+import ArrowBackButton from "../../../Components/UI/ArrowBackButton/ArrowBackButton"
 
 const ChatHeaderComponent = ({ params, socket }) => {
-    const navigate = useNavigate()
     const [usersCount, setUsersCount] = useState(0)
+    const navigate = useNavigate()
+    const options = [{ key: '1', label: 'Вернуться назад' }, { key: '2', label: 'Покинуть комнату' }]
+
+    const goBack = () => {
+        navigate('/main')
+    }
 
     const leftRoom = () => {
         socket.emit('leftRoom', params)
-        navigate('/')
+        navigate('/main')
+    }
+
+    const handleSelect = (eventKey) => {
+        switch (eventKey) {
+            case "1":
+                goBack()
+                break
+            case "2":
+                leftRoom()
+                break
+            default:
+                break
+        }
     }
 
     const insertEnding = (count) => {
@@ -20,12 +40,12 @@ const ChatHeaderComponent = ({ params, socket }) => {
     useEffect(() => {
         // Присоединение кого-либо из пользователей к комнате
         socket.on('joinRoom', ({ data }) => {
-            setUsersCount(data.users.length)
+            setUsersCount(data.countOfUsers)
         })
 
         // кто-либо из пользователей покинул комнату
         socket.on('leftRoom', ({ data }) => {
-            setUsersCount(data.users.length)
+            setUsersCount(data.countOfUsers)
         })
     }, [socket])
 
@@ -33,7 +53,10 @@ const ChatHeaderComponent = ({ params, socket }) => {
         <div className={cl.header}>
             <div className={cl.title}>{params.room}</div>
             <div className={cl.users}>{usersCount} пользовател{insertEnding(usersCount)} в комнате</div>
-            <button className={cl.left} onClick={leftRoom}>Покинуть комнату</button>
+            <div className={cl.options}>
+                <ArrowBackButton to="/main" className={"d-flex"}/>          
+                <VerticalDotsDropdown options={options} handleSelect={handleSelect}/>
+            </div>
         </div>
     )
 }

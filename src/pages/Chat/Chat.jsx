@@ -1,5 +1,5 @@
 import io from "socket.io-client"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import { useLocation } from "react-router-dom"
 import EmojiPicker from "emoji-picker-react";
 import cl from "./Chat.module.css"
@@ -10,29 +10,31 @@ import ChatHeaderComponent from "./ChatHeaderComponent/ChatHeaderComponent.jsx";
 import ChatAttachedFiles from "./ChatAttachedFiles/ChatAttachedFiles.jsx";
 import { BiSolidSend } from "react-icons/bi";
 import { RiEmojiStickerFill } from "react-icons/ri";
+import { useUser } from "../../Context/AuthContext.js";
 
 const URL = process.env.REACT_APP_SERVER_URL
 const socket = io.connect(URL)
 
 const Chat = () => {
     const { search } = useLocation()    // Получение параметров из запроса в виде строки
-    const [params, setParams] = useState({name: '', room: ''})
+    // const [params, setParams] = useState({name: '', room: ''})
     const [messages, setMessages] = useState([])    // Массив всех сообщений в комнате
     const [message, setMessage] = useState('')      // Текст сообщения в инпуте
     const [emojiIsOpen, setEmojiIsOpen] = useState(false)
     const [files, setFiles] = useState([])  // Массив файлов, прикрепленных к новому сообщению
     const [modalImageViewerData, setModalImageViewerData] = useState({slideIndex: 0, sources: []}) // состояние хранит массив url-путей картинок, которые нужно открыть в модальном окне, а также индекс картинки, которая будет показываться по умолчанию, т. е. картинка, на которую нажал пользователь
+    const { user } = useUser()
     const nodeMessages = useRef()
-    // 
+    
+    const { name: roomname } = Object.fromEntries(new URLSearchParams(search))    // Имя чата
+    const params = useMemo(() => ({ user, room: roomname }), [user, roomname])
+    console.log("PARAMS", params);
+    
 
     useEffect(()=> {
-        // объект типа URLSearchParams является перебираемым, аналогично Map => можно получить объект с ключами(в данном случае названия параметров запроса) и их значениями(значения параметров запроса)
-        const searchParams = Object.fromEntries(new URLSearchParams(search))
-        setParams(searchParams)
-
         // Инициализация события "join", которое дальше будет обработано на сервере
-        socket.emit('join', searchParams)
-    }, [search])
+        socket.emit('join', params)
+    }, [params])
 
     // Автоматический скролл до последнего сообщения
     useEffect(() => {
@@ -65,6 +67,8 @@ const Chat = () => {
     useEffect(() => {
         // Отправление сообщения от кого-либо из пользователей:
         socket.on('message', ({ data }) => {
+            console.log("onMessage data", data);
+            
             setMessages((_state) => [..._state, data])
         })
 
@@ -82,9 +86,8 @@ const Chat = () => {
 
     const sendMessage = (e) => {
         e.preventDefault()
-
+        
         if (!message.trim() && !files.length) return
-        console.log(files);
         socket.emit('sendMessage', {message, params, files})
         
         setFiles([])
@@ -113,12 +116,12 @@ const Chat = () => {
 console.log("FILES", files);
     return (
         <div className={cl.wrap}>
-            <div className={cl.container}>
+            <div className={`${cl.container} `}>
                 
                 <ChatHeaderComponent params={params} socket={socket} />
 
                 <div className={cl.main} onClick={chatHandleListener}>
-                    <Messages messages={messages} name={params.name} ref={nodeMessages}/>
+                    <Messages messages={messages} username={params.user.username} ref={nodeMessages}/>
                 </div>
 
                 <div className={cl.input}>

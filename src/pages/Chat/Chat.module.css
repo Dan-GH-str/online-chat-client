@@ -1,7 +1,3 @@
-* {
-    font-family: 'Balsamiq Sans', sans-serif;
-}
-
 .wrap {
     width: 100%;
     height: 100%;
@@ -109,12 +105,13 @@
     .form-input {
         width: 70%;
     }
-}
-
-@media (max-width: 1280px) {
+    
     .container {
         width: 85%;
     }
+}
+
+@media (max-width: 1280px) {
 
     .form {
         padding: 1.2rem 0;

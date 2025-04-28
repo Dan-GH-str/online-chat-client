@@ -1,5 +1,6 @@
 .img-article {
     width: 31%;
+    max-height: 600px;
     flex-grow: 1;
 }
 

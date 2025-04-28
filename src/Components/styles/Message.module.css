@@ -40,7 +40,7 @@
 }
 
 .file-area {
-    width: 60%;
+    width: 55%;
     margin-top: 0.2rem;
     display: flex;
     flex-direction: column;
@@ -81,10 +81,6 @@
 }
 
 @media (max-width: 1024px) {
-    .file-area {
-        width: 80%;
-    }
-
     .file-area__docs {
         width: 70%;
     }
