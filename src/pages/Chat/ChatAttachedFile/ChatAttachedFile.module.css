@@ -45,7 +45,7 @@
 .file-block__dltBtn {
     background-color: transparent;
     border: none;
-    font-size: 29px;
+    font-size: 42px;
     color: rgb(121, 121, 121);
     cursor: pointer;
 }
@@ -69,5 +69,11 @@
 
     .file-block__name {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-block {
+        margin: 0.7rem 0;
     }
 }

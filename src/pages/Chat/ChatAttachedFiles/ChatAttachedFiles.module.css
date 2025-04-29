@@ -3,6 +3,7 @@
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     padding: 2rem 1.5rem;
     background-color: #333;
     border-bottom-left-radius: 12px;
@@ -32,5 +33,11 @@
 @media (max-width: 1550px) {
     .attached-files-area {
         padding: 1rem 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .attached-files-area {
+        padding: 0.8rem;
     }
 }

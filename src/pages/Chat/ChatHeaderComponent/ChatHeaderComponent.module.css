@@ -27,9 +27,19 @@
     align-items: center;
 }
 
+.title, .options {
+    width: 33%;
+}
+
+.users {
+    width: 34%;
+    justify-content: center;
+}
+
 .options {
     display: flex;
     align-items: center;
+    justify-content: end;
 }
 
 .left {

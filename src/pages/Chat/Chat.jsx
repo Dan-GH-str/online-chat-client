@@ -41,25 +41,33 @@ const Chat = () => {
         let lastMessage = nodeMessages.current.lastElementChild
         
         if (lastMessage !== null)
-            lastMessage.scrollIntoView()
+            // lastMessage.scrollIntoView()
+            // задержка, чтобы дождаться загрузки изображений, прежде чем выполнять прокрутку
+            setTimeout(lastMessage.scrollIntoView(), 200) 
     }, [messages])
 
     // Изменения соотношения основной части чата и его нижней части при прикреплении файлов для большей удобности
     useEffect(() => {
+        console.dir(nodeMessages);
+        
         const $chatMain = nodeMessages.current.parentNode
-        const $chatInput = nodeMessages.current.parentNode.nextElementSibling
+        const $chatInput = $chatMain.nextElementSibling
+        const $chatForm = $chatInput.childNodes[0]
 
         if (files.length === 1) {
-            $chatMain.style.height = "62%"
-            $chatInput.style.height = "30%"
+            $chatMain.style.height = "64%"
+            $chatInput.style.height = "28%"
+            $chatForm.style.height = "66%"
         }
         else if (files.length > 1) {
-            $chatMain.style.height = "47%"
-            $chatInput.style.height = "45%"
+            $chatMain.style.height = "57%"
+            $chatInput.style.height = "35%"
+            $chatForm.style.height = "52%"
         }
         else {
             $chatMain.style.removeProperty("height")
             $chatInput.style.removeProperty("height")
+            $chatForm.style.removeProperty("height")
         }
 
     }, [files])
@@ -101,7 +109,7 @@ const Chat = () => {
 
             e.target.parentNode.parentNode.childNodes.forEach(el => sources.push(el.childNodes[0].currentSrc))
 
-            console.log("INDEEEEEEEEEX", e.target.dataset.index);
+            console.log("INDEX", e.target.dataset.index);
 
             setModalImageViewerData({ slideIndex: parseInt(e.target.dataset.index), sources })
         }
@@ -117,7 +125,6 @@ console.log("FILES", files);
     return (
         <div className={cl.wrap}>
             <div className={`${cl.container} `}>
-                
                 <ChatHeaderComponent params={params} socket={socket} />
 
                 <div className={cl.main} onClick={chatHandleListener}>
@@ -155,9 +162,6 @@ console.log("FILES", files);
                     }
 
                 </div>
-
-                
-
             </div>
 
             <ModalImageViewer modalImageViewerData={modalImageViewerData} setModalImageViewerData={setModalImageViewerData} />

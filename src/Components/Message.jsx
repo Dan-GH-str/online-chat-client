@@ -32,7 +32,7 @@ const Message = ({ data, username }) => {
                         else if (key === "docs" && filesData[key].length)
                             return (
                                 <div className={cl["file-area__docs"]} key={1}>
-                                    {filesData[key].map(( fileData ) => <FileRenderComponent fileData={fileData} key={fileData.id} />)}]
+                                    {filesData[key].map(( fileData ) => <FileRenderComponent fileData={fileData} key={fileData.id} />)}
                                 </div>
                             )
                         return null

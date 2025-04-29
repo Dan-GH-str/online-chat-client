@@ -6,7 +6,10 @@ const Upload = ({ setFiles }) => {
     const inputId = useId()
 
     const handleChange = useCallback((e) => {
-        const selectedFiles = e.target.files
+        const input = e.target
+        const selectedFiles = input.files
+        console.log("HAMDLECHANGE");
+        
 
         if (!selectedFiles.length) return;
         else if (selectedFiles.length > 10) alert("Вы можете прикрепить не более 10 файлов одновременно!")
@@ -35,6 +38,8 @@ const Upload = ({ setFiles }) => {
 
                 if (i === selectedFilesKeys.length - 1) 
                     setFiles(files)
+
+                input.value = ''
             }
 
             reader.onerror = () => {
