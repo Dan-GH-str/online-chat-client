@@ -2,7 +2,7 @@ import { useCallback, useId } from "react"
 import cl from "./Upload.module.css"
 import { SlPaperClip } from "react-icons/sl";
 
-const Upload = ({ setFiles }) => {
+const Upload = ({ setFiles, innerRef }) => {
     const inputId = useId()
 
     const handleChange = useCallback((e) => {
@@ -39,7 +39,7 @@ const Upload = ({ setFiles }) => {
                 if (i === selectedFilesKeys.length - 1) 
                     setFiles(files)
 
-                input.value = ''
+                console.log(input.value);
             }
 
             reader.onerror = () => {
@@ -50,7 +50,15 @@ const Upload = ({ setFiles }) => {
 
     return (
         <label className={cl.inputFiles} htmlFor={inputId}>
-            <input multiple type="file" className={cl["inputFiles__field"]} accept="image/*,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" id={inputId} onChange={handleChange}/>
+            <input 
+                multiple 
+                type="file" 
+                className={cl["inputFiles__field"]} 
+                accept="image/*,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+                id={inputId} 
+                ref={innerRef}
+                onChange={handleChange}
+            />
             <SlPaperClip className={cl["inputFiles__icon"]} title="Прикрепить файлы"/>
         </label>
     )

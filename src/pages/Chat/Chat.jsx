@@ -24,7 +24,8 @@ const Chat = () => {
     const [files, setFiles] = useState([])  // Массив файлов, прикрепленных к новому сообщению
     const [modalImageViewerData, setModalImageViewerData] = useState({slideIndex: 0, sources: []}) // состояние хранит массив url-путей картинок, которые нужно открыть в модальном окне, а также индекс картинки, которая будет показываться по умолчанию, т. е. картинка, на которую нажал пользователь
     const { user } = useUser()
-    const nodeMessages = useRef()
+    const $nodeMessages = useRef(null)
+    const $uploadInput = useRef(null)
     
     const { name: roomname } = Object.fromEntries(new URLSearchParams(search))    // Имя чата
     const params = useMemo(() => ({ user, room: roomname }), [user, roomname])
@@ -38,19 +39,19 @@ const Chat = () => {
 
     // Автоматический скролл до последнего сообщения
     useEffect(() => {
-        let lastMessage = nodeMessages.current.lastElementChild
+        let lastMessage = $nodeMessages.current.lastElementChild
         
         if (lastMessage !== null)
             // lastMessage.scrollIntoView()
             // задержка, чтобы дождаться загрузки изображений, прежде чем выполнять прокрутку
-            setTimeout(lastMessage.scrollIntoView(), 200) 
+            setTimeout(lastMessage.scrollIntoView(), 1200) 
     }, [messages])
 
     // Изменения соотношения основной части чата и его нижней части при прикреплении файлов для большей удобности
     useEffect(() => {
-        console.dir(nodeMessages);
+        console.dir($nodeMessages);
         
-        const $chatMain = nodeMessages.current.parentNode
+        const $chatMain = $nodeMessages.current.parentNode
         const $chatInput = $chatMain.nextElementSibling
         const $chatForm = $chatInput.childNodes[0]
 
@@ -98,6 +99,8 @@ const Chat = () => {
         if (!message.trim() && !files.length) return
         socket.emit('sendMessage', {message, params, files})
         
+                
+        $uploadInput.current.value = null
         setFiles([])
         setMessage('')
     }
@@ -128,7 +131,7 @@ console.log("FILES", files);
                 <ChatHeaderComponent params={params} socket={socket} />
 
                 <div className={cl.main} onClick={chatHandleListener}>
-                    <Messages messages={messages} username={params.user.username} ref={nodeMessages}/>
+                    <Messages messages={messages} username={params.user.username} ref={$nodeMessages}/>
                 </div>
 
                 <div className={cl.input}>
@@ -144,7 +147,7 @@ console.log("FILES", files);
                             autoComplete="off"  
                             required  
                         />
-                        <Upload setFiles={setFiles}/>
+                        <Upload setFiles={setFiles} innerRef={$uploadInput}/>
                         <div className={cl.emoji}>
                             <RiEmojiStickerFill className={cl["emoji-icon"]} onClick={() => setEmojiIsOpen(!emojiIsOpen)} title="Выбрать смайлики"/>
 
