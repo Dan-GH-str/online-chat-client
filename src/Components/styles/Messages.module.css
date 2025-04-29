@@ -22,9 +22,6 @@
     border-radius: 100px;
 }
 
-.messages {
-}
-
 @media (max-width: 480px) {
     .messages {
         padding-top: 0.2rem;

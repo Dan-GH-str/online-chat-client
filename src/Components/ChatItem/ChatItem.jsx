@@ -9,7 +9,15 @@ const ChatItem = ({ chat, isUserChat }) => {
         navigate(`/chat?name=${chat.name}`)
     }
 
-    const lastMessage = chat.data.length > 0 ? chat.data.text ? chat.data.text : 'Вложенные файлы...' : 'Сообщений пока нет...'
+    // Получаем текст последнего сообщения из чата
+    const lastMessage = 
+        chat.data.length > 0 ? // Проверяем, есть ли сообщения в чате
+            chat.data[chat.data.length - 1].text ? // Если сообщения есть, проверяем текст последнего сообщения
+                chat.data[chat.data.length - 1].text : // Если текст есть, берем его
+                'Вложенные файлы...' : // Если текста нет, возвращаем строку 'Вложенные файлы...'
+        'Сообщений пока нет...' // Если сообщений нет, возвращаем строку 'Сообщений пока нет...'
+
+    // const lastMessage = chat.data.length > 0 ? chat.data[chat.data.length - 1].text ? chat.data[chat.data.length - 1].text : 'Вложенные файлы...' : 'Сообщений пока нет...'
 
     return (
         <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between p-2 border-bottom" onClick={handleJoinClick} style={{ cursor: 'pointer' }}>

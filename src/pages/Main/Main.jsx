@@ -14,7 +14,7 @@ const Main = () => {
     const [ query, setQuery ] = useState('')
     const { user } = useUser()
     const navigate = useNavigate()
-    const filtreedAndSearchedChats = useChats(chats, query)
+    const filteredAndSearchedChats = useChats(chats, query)
     const createChatInputRef = useRef(null)
     console.log("Chats", chats)
 
@@ -87,14 +87,14 @@ const Main = () => {
                                     <div className="mt-3">
                                         <h4 className="text">Ваши чаты</h4>
                                         {chats.userChats.length === 0 && <p className="text-muted text">Чатов пока нет ツ</p>}
-                                        {chats.userChats.length > 0 && filtreedAndSearchedChats.userChats.length === 0 && <p className="text-muted text">Нет совпадений</p>}
-                                        <ChatList chats={filtreedAndSearchedChats.userChats} isUserChat={true} />
+                                        {chats.userChats.length > 0 && filteredAndSearchedChats.userChats.length === 0 && <p className="text-muted text">Нет совпадений</p>}
+                                        <ChatList chats={filteredAndSearchedChats.userChats} isUserChat={true} />
                                     </div>
                                     
                                     {chats.otherChats.length > 0 && (
                                     <div className="mt-3">
                                         <h4 className="text">Результаты поиска</h4>
-                                        <ChatList chats={chats.otherChats} isUserChat={false} />
+                                        <ChatList chats={filteredAndSearchedChats.otherChats} isUserChat={false} />
                                     </div>
                                     )}
                                 </div>

@@ -14,7 +14,7 @@ const FIELDS = {
 const Register = () => {
     const { USERNAME, PASSWORD } = FIELDS
     const { login } = useUser()
-    const { navigate } = useNavigate()
+    const navigate = useNavigate()
 
     const [values, setValues] = useState({[USERNAME]: "", [PASSWORD]: ""})
 
@@ -24,7 +24,7 @@ const Register = () => {
         if (validateForm()) {
             try {
                 const response = await api.post('/auth/register', values);
-                if (response.status === 200) {
+                if (response.status === 201) {
                     login(response.data.user)
                     navigate('/main')
                 }
