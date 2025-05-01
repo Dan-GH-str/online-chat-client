@@ -67,9 +67,12 @@ const Main = () => {
         const chatName = createChatInputRef.current.value
         api.post(`/api/createChat`, { name: chatName })
         .then(response => {
-            if (response.status === 200) {
+            if (response.status === 201) {
                 navigate(`/chat?name=${chatName}`)
             }
+        })
+        .catch(({ response }) => {
+            alert(response.data)
         })
     }
 
