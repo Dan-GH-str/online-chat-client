@@ -54,7 +54,7 @@ const ChatHeaderComponent = ({ params, socket }) => {
             <div className={cl.title}>{params.room}</div>
             <div className={cl.users}>{usersCount} пользовател{insertEnding(usersCount)} в комнате</div>
             <div className={cl.options}>
-                <ArrowBackButton to="/main" className={"d-flex"} title="Вернуться назад"/>          
+                <ArrowBackButton to="/main" className={`d-flex ${cl["arrowback-button"]}`} title="Вернуться назад"/>          
                 <VerticalDotsDropdown options={options} handleSelect={handleSelect}/>
             </div>
         </div>

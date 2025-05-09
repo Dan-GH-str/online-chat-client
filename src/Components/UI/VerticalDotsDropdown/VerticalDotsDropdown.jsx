@@ -3,7 +3,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <button
-        className="btn btn-light btn-sm d-flex fs-3"  // Используем Bootstrap для стилизации кнопки
+        className={`btn btn-light btn-sm d-flex fs-3 p-0`}
         type="button"
         onClick={onClick}
         style={{ border: 'none', background: 'none' }} // Убираем стандартное оформление кнопки

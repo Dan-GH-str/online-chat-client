@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     font-family: 'Poiret One', arial;
-    padding: 0 2rem;
+    padding: 0 1rem;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
@@ -62,10 +62,18 @@
     background: rgb(203, 65, 65);
 }
 
+.arrowback-button {
+    margin-right: 1rem;
+}
+
 /* Стили для адаптивности */
 @media (max-width: 1366px) {
     .header {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .arrowback-button {
+        margin-right: 0.5rem;
     }
 }
 
@@ -91,10 +99,6 @@
 }
 
 @media (max-width: 480px) {
-    .header {
-        padding: 0 0.5rem;
-    }
-
     .title {
         font-size: 16px;
         box-sizing: border-box;
