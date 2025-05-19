@@ -14,13 +14,13 @@ function App() {
     // Устанавливаем переменную при загрузке
     setVhProperty()
 
-    // Добавляем обработчик resize
-    window.addEventListener('resize', setVhProperty)
+    // // Добавляем обработчик resize
+    // window.addEventListener('resize', setVhProperty)
 
-    // Чистим обработчик при размонтировании
-    return () => {
-      window.removeEventListener('resize', setVhProperty)
-    }
+    // // Чистим обработчик при размонтировании
+    // return () => {
+    //   window.removeEventListener('resize', setVhProperty)
+    // }
   }, [])
 
   return (
